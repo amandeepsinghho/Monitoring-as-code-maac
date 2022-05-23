@@ -42,7 +42,20 @@ jobs:
          image-ref: deploytest:latest
          format: 'sarif'
          output: 'trivy-results.sarif'
-
+      
+      - name: Security scan on docker image
+        uses: snyk/actions/docker@master
+        id: docker-image-scan
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: deploytest:latest
+          args: --file=./Dockerfile 
+            --severity-threshold=low
+            --sarif-file-output=./docker.snyk.sarif
+          sarif: false
+     
       - name: Upload Trivy scan results to GitHub Security tab\
         if: always()
         uses: github/codeql-action/upload-sarif@v1
