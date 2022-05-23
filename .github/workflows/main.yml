@@ -39,7 +39,7 @@ jobs:
         id: trivy-scan
         continue-on-error: true
         with:
-         image-ref: deploydocs:latest
+         image-ref: deploytest:latest
          format: 'sarif'
          output: 'trivy-results.sarif'
 
